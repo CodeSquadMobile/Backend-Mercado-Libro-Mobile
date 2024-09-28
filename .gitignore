@@ -1,0 +1,13 @@
+#entorno virtual
+/mercadolibro-env
+mercadolibro
+/backend/mercadolibro
+#Archivos 2023
+/Backend 2023
+__pycache__/
+/mercadolibro
+
+#pychache
+myproject/ecommerce/__pycache__
+myproject/myproject/__pycache__
+

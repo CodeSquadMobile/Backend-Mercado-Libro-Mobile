@@ -1,0 +1,33 @@
+asgiref==3.8.1
+Django==4.2
+django-cors-headers==4.3.1
+djangorestframework==3.15.1
+djangorestframework-simplejwt==5.3.1
+mysql-connector-python==8.4.0
+mysqlclient==2.2.4
+pillow==10.3.0
+PyJWT==2.8.0
+setuptools==69.5.1
+sqlparse==0.5.0
+tzdata==2024.1
+wheel==0.43.0
+
+
+# procedimiento:
+# python -m venv mercadolibro
+# mercadolibro/Scripts/activate
+# pip install django-filter
+# pip install -r requirements.txt
+
+# django-admin startproject myproject
+# cd myproject
+# settings.py
+
+# python manage.py makemigrations
+# python manage.py migrate
+# python manage.py runserver
+
+# python manage.py createsuperuser (importante: el login es con el email, registrarlo)
+# python manage.py runserver
+
+# python manage.py startapp ecommerce

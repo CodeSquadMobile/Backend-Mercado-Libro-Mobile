@@ -1,14 +1,11 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
-from .models import Categoria, Libro, Autor, Direccion, FormaEnvio, FormaPago, Pedido, EstadoPedido, HistorialPedido, Reseña, Rol
+from .models import Categoria, Libro, Autor, ItemCarrito, Pedido, Direccion, MetodoPago, Reseña
 
 @admin.register(get_user_model())
 class CustomUserAdmin(UserAdmin):
     list_display = ('username', 'email', 'password')
-
-class RolAdmin(admin.ModelAdmin):
-    list_display = ('rol', 'usuario')
 
 class CategoriaAdmin(admin.ModelAdmin):
     list_display = ('nombre_categoria',)
@@ -19,35 +16,34 @@ class AutorAdmin(admin.ModelAdmin):
 class LibroAdmin(admin.ModelAdmin):
     list_display = ('titulo', 'portada', 'id_categoria', 'id_autor', 'descripcion', 'precio', 'stock')
 
-class DireccionAdmin(admin.ModelAdmin):
-    list_display = ('calle', 'ciudad', 'provincia', 'codigo_postal')
-
-class FormaEnvioAdmin(admin.ModelAdmin):
-    list_display = ('forma_envio',)
-
-class FormaPagoAdmin(admin.ModelAdmin):
-    list_display = ('forma_pago',)
-
 class PedidoAdmin(admin.ModelAdmin):
-    list_display = ('usuario', 'estado_pedido', 'fecha_pedido', 'direccion_envio', 'forma_envio', 'forma_pago')
+    list_display = ('id_pedido', 'usuario', 'direccion', 'metodo_pago', 'fecha_pedido', 'total', 'estado')
+    search_fields = ('usuario__email',)
+    list_filter = ('estado', 'fecha_pedido')
 
-class EstadoPedidoAdmin(admin.ModelAdmin):
-    list_display = ('estado_pedido', 'id_pedido')
+class ItemCarritoAdmin(admin.ModelAdmin):
+    list_display = ('usuario', 'libro', 'cantidad')
+    search_fields = ('usuario__email', 'libro__titulo')
+    list_filter = ('fecha_agregado',)
 
-class HistorialPedidoAdmin(admin.ModelAdmin):
-    list_display = ('id_pedido', 'estado_pedido', 'fecha_pedido')
+class DireccionAdmin(admin.ModelAdmin):
+    list_display = ('usuario', 'calle', 'numero', 'ciudad', 'provincia')
+    search_fields = ('usuario__email', 'calle', 'numero', 'ciudad', 'provincia')
+
+class MetodoPagoAdmin(admin.ModelAdmin):
+    list_display = ('usuario', 'numero_tarjeta', 'vencimiento')
+    search_fields = ('usuario__email', 'numero_tarjeta')
 
 class ReseñaAdmin(admin.ModelAdmin):
-    list_display = ('libro', 'usuario', 'comentario', 'calificacion', 'fecha_resena')
+    list_display = ('libro', 'usuario', 'comentario', 'fecha_creacion')
+    search_fields = ('usuario__email', 'libro__titulo')  # Permite buscar reseñas por usuario o título del libro
+    list_filter = ('libro', 'usuario')
 
-admin.site.register(Categoria, CategoriaAdmin)
-admin.site.register(Rol, RolAdmin)
-admin.site.register(Libro, LibroAdmin)
-admin.site.register(Autor, AutorAdmin)
-admin.site.register(Direccion, DireccionAdmin)
-admin.site.register(FormaEnvio, FormaEnvioAdmin)
-admin.site.register(FormaPago, FormaPagoAdmin)
+admin.site.register(Categoria)
+admin.site.register(Autor)
+admin.site.register(Libro)
 admin.site.register(Pedido, PedidoAdmin)
-admin.site.register(EstadoPedido, EstadoPedidoAdmin)
-admin.site.register(HistorialPedido, HistorialPedidoAdmin)
+admin.site.register(ItemCarrito, ItemCarritoAdmin)
+admin.site.register(Direccion, DireccionAdmin)
+admin.site.register(MetodoPago, MetodoPagoAdmin)
 admin.site.register(Reseña, ReseñaAdmin)

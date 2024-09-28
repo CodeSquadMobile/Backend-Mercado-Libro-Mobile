@@ -9,28 +9,22 @@ from .models import (
     Categoria,
     Autor,
     Libro,
-    Direccion,
-    FormaEnvio,
-    FormaPago,
+    ItemCarrito,
     Pedido,
-    EstadoPedido,
-    HistorialPedido,
-    Reseña,
-    Rol
+    Direccion,
+    MetodoPago,
+    Reseña
 )
 from .serializers import (
+    UserSerializer,
     CategoriaSerializer,
     AutorSerializer,
-    HistorialPedidoSerializer,
     LibroSerializer,
-    DireccionSerializer,
-    FormaEnvioSerializer,
-    FormaPagoSerializer,
+    ItemCarritoSerializer, 
     PedidoSerializer,
-    EstadoPedidoSerializer,
-    ReseñaSerializer,
-    RolSerializer, 
-    UserSerializer
+    DireccionSerializer,
+    MetodoPagoSerializer,
+    ReseñaSerializer
 )
 
 
@@ -61,9 +55,10 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
 
-class RolViewSet(viewsets.ModelViewSet):
-    queryset = Rol.objects.all()
-    serializer_class = RolSerializer
+    def destroy(self, request, *args, **kwargs):
+        user = self.get_object()
+        user.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 class CategoriaViewSet(viewsets.ModelViewSet):
     queryset = Categoria.objects.all()
@@ -80,55 +75,52 @@ class LibroViewSet(viewsets.ModelViewSet):
     filterset_fields = {
         'titulo': ['icontains'],
         'id_categoria__nombre_categoria': ['exact'],
+        'precio': ['lte', 'gte'],
+        'stock': ['lte', 'gte'],
     }
-
+    
 class DireccionViewSet(viewsets.ModelViewSet):
     queryset = Direccion.objects.all()
     serializer_class = DireccionSerializer
 
-class FormaEnvioViewSet(viewsets.ModelViewSet):
-    queryset = FormaEnvio.objects.all()
-    serializer_class = FormaEnvioSerializer
-    
+    def get_queryset(self):
+        return Direccion.objects.filter(usuario=self.request.user)  
 
-class FormaPagoViewSet(viewsets.ModelViewSet):
-    queryset = FormaPago.objects.all()
-    serializer_class = FormaPagoSerializer
-    
+class MetodoPagoViewSet(viewsets.ModelViewSet):
+    queryset = MetodoPago.objects.all()
+    serializer_class = MetodoPagoSerializer
+
+    def get_queryset(self):
+        return MetodoPago.objects.filter(usuario=self.request.user) 
+
+class ItemCarritoViewSet(viewsets.ModelViewSet):
+    queryset = ItemCarrito.objects.all()
+
+    def get_queryset(self):
+        return ItemCarrito.objects.filter(usuario=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(usuario=self.request.user) 
 
 class PedidoViewSet(viewsets.ModelViewSet):
-    queryset = Pedido.objects.all()
     serializer_class = PedidoSerializer
-    
+    queryset = Pedido.objects.all()
 
-class EstadoPedidoViewSet(viewsets.ModelViewSet):
-    queryset = EstadoPedido.objects.all()
-    serializer_class = EstadoPedidoSerializer
-    
+    def get_queryset(self):
+        return Pedido.objects.filter(usuario=self.request.user)  
 
-class HistorialPedidoViewSet(viewsets.ModelViewSet):
-    queryset = HistorialPedido.objects.all()
-    serializer_class = HistorialPedidoSerializer
-    def list(self, request, cliente_id=None):
-        pedidos = Pedido.objects.filter(usuario_id=cliente_id)
-        detalles_pedidos = []
-
-        for pedido in pedidos:
-            detalles = HistorialPedido.objects.filter(id_pedido=pedido)
-            for detalle in detalles:
-                detalles_pedidos.append({
-                    'direccion_envio': f'{pedido.direccion_envio.calle}, {pedido.direccion_envio.ciudad}, {pedido.direccion_envio.provincia}',
-                    'estado_pedido': detalle.estado_pedido,
-                    'fecha_pedido': detalle.fecha_pedido,
-                    'titulo_libro': detalle.libro.titulo,
-                    'cantidad': detalle.cantidad,
-                    'precio_total': detalle.precio_total,
-                })
-
-        return Response({'detalles_pedidos': detalles_pedidos})
-    
+    def perform_create(self, serializer):
+        carrito_items = ItemCarrito.objects.filter(usuario=self.request.user)
+        if carrito_items.exists():
+            total = sum(item.libro.precio * item.cantidad for item in carrito_items)
+            pedido = serializer.save(usuario=self.request.user, total=total)
+            carrito_items.delete()  
+            return pedido
+        raise serializers.ValidationError("El carrito está vacío.")
 
 class ReseñaViewSet(viewsets.ModelViewSet):
     queryset = Reseña.objects.all()
     serializer_class = ReseñaSerializer
-    
+
+    def perform_create(self, serializer):
+        serializer.save(usuario=self.request.user)

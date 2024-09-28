@@ -83,11 +83,11 @@ DATABASES = {
 
 'default': {
 'ENGINE': 'django.db.backends.mysql',
-'NAME': 'mercadolibro_db',
+'NAME': 'mercadolibro1',
 'USER': 'root',
 'PASSWORD': 'Ismael07',
 'HOST': 'localhost',
-'PORT': '3307',
+'PORT': '3306',
 'OPTIONS': {
 'sql_mode': 'traditional',
 }

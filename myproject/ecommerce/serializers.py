@@ -5,14 +5,11 @@ from .models import (
     Categoria,
     Autor,
     Libro,
-    Direccion,
-    FormaEnvio,
-    FormaPago,
     Pedido,
-    EstadoPedido,
-    HistorialPedido,
-    Reseña,
-    Rol
+    ItemCarrito,
+    Direccion,
+    MetodoPago,
+    Reseña
 )
 
 def validate_password(self, value):
@@ -34,11 +31,6 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = ('email', 'username', 'password')
-
-class RolSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Rol
-        fields = '__all__'
 
 class CategoriaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -67,34 +59,80 @@ class LibroSerializer(serializers.ModelSerializer):
 class DireccionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Direccion
-        fields = '__all__'
+        fields = ['calle', 'numero', 'ciudad', 'provincia']
 
-class FormaEnvioSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = FormaEnvio
-        fields = '__all__'
+    def create(self, validated_data):
+        return Direccion.objects.create(usuario=self.context['request'].user, **validated_data)
 
-class FormaPagoSerializer(serializers.ModelSerializer):
+class MetodoPagoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = FormaPago
-        fields = '__all__'
+        model = MetodoPago
+        fields = ['id', 'usuario', 'numero_tarjeta', 'cvv', 'vencimiento']
+
+    def validate_numero_tarjeta(self, value):
+        if len(value) != 16 or not value.isdigit():
+            raise serializers.ValidationError("El número de tarjeta debe tener 16 dígitos.")
+        return value
+
+    def validate_cvv(self, value):
+        if len(value) != 3 or not value.isdigit():
+            raise serializers.ValidationError("El CVV debe tener 3 dígitos.")
+        return value
+
+    def validate_vencimiento(self, value):
+        if len(value) != 7 or value[2] != '/':
+            raise serializers.ValidationError("El formato de vencimiento debe ser MM/AA.")
+        
+        mes = value[:2]
+        if not (1 <= int(mes) <= 12):
+            raise serializers.ValidationError("El mes debe estar entre 01 y 12.")
+
+        return value
+
+    def create(self, validated_data):
+        return MetodoPago.objects.create(usuario=self.context['request'].user, **validated_data)
+
+    def update(self, instance, validated_data):
+        instance.numero_tarjeta = validated_data.get('numero_tarjeta', instance.numero_tarjeta)
+        instance.cvv = validated_data.get('cvv', instance.cvv)
+        instance.vencimiento = validated_data.get('vencimiento', instance.vencimiento)
+        instance.save()
+        return instance
+
+class ItemCarritoSerializer(serializers.ModelSerializer):
+    libro = LibroSerializer(read_only=True)
+    id_libro = serializers.PrimaryKeyRelatedField(queryset=Libro.objects.all(), source='libro', write_only=True)
+
+    class Meta:
+        model = ItemCarrito
+        fields = ['id_libro', 'libro', 'cantidad']
+
+    def create(self, validated_data):
+        item, created = ItemCarrito.objects.get_or_create(
+            usuario=validated_data['usuario'],
+            libro=validated_data['libro'],
+            defaults={'cantidad': validated_data['cantidad']}
+        )
+        if not created:
+            item.cantidad += validated_data['cantidad'] 
+            item.save()
+        return item
 
 class PedidoSerializer(serializers.ModelSerializer):
+    direccion = DireccionSerializer()
+    
     class Meta:
         model = Pedido
-        fields = '__all__'
+        fields = ['id_pedido', 'usuario', 'direccion', 'metodo_pago', 'estado', 'fecha_pedido', 'total']
 
-class EstadoPedidoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = EstadoPedido
-        fields = '__all__'
-
-class HistorialPedidoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = HistorialPedido
-        fields = '__all__'
+    def create(self, validated_data):
+        direccion_data = validated_data.pop('direccion')
+        direccion = DireccionSerializer.create(DireccionSerializer(), validated_data=direccion_data)
+        pedido = Pedido.objects.create(direccion=direccion, **validated_data)
+        return pedido
 
 class ReseñaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reseña
-        fields = '__all__'
+        fields = ['libro', 'usuario', 'comentario', 'fecha_creacion']
+

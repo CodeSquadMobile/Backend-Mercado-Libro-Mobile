@@ -1,22 +1,18 @@
 from django.urls import path, include
 from rest_framework import routers
-from .views import LoginView, LogoutView, SignupView, RolViewSet, CategoriaViewSet, AutorViewSet, LibroViewSet, \
-    DireccionViewSet, FormaEnvioViewSet, FormaPagoViewSet, PedidoViewSet, EstadoPedidoViewSet, HistorialPedidoViewSet, \
-    ReseñaViewSet, UserViewSet
+from .views import LoginView, LogoutView, SignupView, UserViewSet, CategoriaViewSet, AutorViewSet, LibroViewSet, \
+ItemCarritoViewSet, PedidoViewSet, DireccionViewSet, MetodoPagoViewSet, ReseñaViewSet
 
 router = routers.DefaultRouter()
-router.register(r'roles', RolViewSet)
+router.register(r'usuarios', UserViewSet)
 router.register(r'categorias', CategoriaViewSet)
 router.register(r'autores', AutorViewSet)
 router.register(r'libros', LibroViewSet)
-router.register(r'direcciones', DireccionViewSet)
-router.register(r'formasenvio', FormaEnvioViewSet)
-router.register(r'formaspago', FormaPagoViewSet)
+router.register(r'carrito', ItemCarritoViewSet)
 router.register(r'pedidos', PedidoViewSet)
-router.register(r'estadospedido', EstadoPedidoViewSet)
-router.register(r'historialespedido', HistorialPedidoViewSet)
+router.register(r'direcciones', DireccionViewSet)
+router.register(r'metodopagos', MetodoPagoViewSet)
 router.register(r'resenas', ReseñaViewSet)
-router.register(r'usuarios', UserViewSet)
 
 
 urlpatterns = [

@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-u2cy_*yur-^)a-069jr*k^ap0lz!07%iqlm_sc*+3mcwf8-)iw
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.0.244', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -38,19 +38,16 @@ AUTH_USER_MODEL = 'ecommerce.CustomUser'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
 ]
 
-CORS_ORIGIN_WHITELIST= ['http://localhost:4200']
-CORS_ALLOW_CREDENTIALS = True
-CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:4200', 
-]
+CORS_ALLOW_ALL_ORIGINS = True
+
 
 ROOT_URLCONF = 'myproject.urls'
 
@@ -83,9 +80,9 @@ DATABASES = {
 
 'default': {
 'ENGINE': 'django.db.backends.mysql',
-'NAME': 'mercadolibro1',
+'NAME': 'mercadolibro',
 'USER': 'root',
-'PASSWORD': 'Ismael07',
+'PASSWORD': '',
 'HOST': 'localhost',
 'PORT': '3306',
 'OPTIONS': {

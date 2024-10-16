@@ -13,7 +13,8 @@ from .models import (
     Pedido,
     Direccion,
     MetodoPago,
-    Reseña
+    Reseña,
+    Contacto
 )
 from .serializers import (
     UserSerializer,
@@ -24,7 +25,8 @@ from .serializers import (
     PedidoSerializer,
     DireccionSerializer,
     MetodoPagoSerializer,
-    ReseñaSerializer
+    ReseñaSerializer,
+    ContactoSerializer
 )
 
 
@@ -124,3 +126,7 @@ class ReseñaViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(usuario=self.request.user)
+
+class ContactoViewSet(viewsets.ModelViewSet):
+    queryset = Contacto.objects.all()
+    serializer_class = ContactoSerializer

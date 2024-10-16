@@ -9,7 +9,8 @@ from .models import (
     ItemCarrito,
     Direccion,
     MetodoPago,
-    Reseña
+    Reseña, 
+    Contacto
 )
 
 def validate_password(self, value):
@@ -136,3 +137,7 @@ class ReseñaSerializer(serializers.ModelSerializer):
         model = Reseña
         fields = ['libro', 'usuario', 'comentario', 'fecha_creacion']
 
+class ContactoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contacto
+        fields = ['nombre', 'email', 'asunto', 'mensaje']

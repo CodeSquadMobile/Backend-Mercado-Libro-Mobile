@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-u2cy_*yur-^)a-069jr*k^ap0lz!07%iqlm_sc*+3mcwf8-)iw
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.100.26', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['192.168.100.26', 'localhost', '127.0.0.1', '192.168.0.244']
 
 # Application definition
 
@@ -75,9 +75,9 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'mercadolibro_db',
+        'NAME': 'mercadolibro',
         'USER': 'root',
-        'PASSWORD': 'Candela_3',
+        'PASSWORD': 'Ismael07',
         'HOST': 'localhost',
         'PORT': '3306',
         'OPTIONS': {

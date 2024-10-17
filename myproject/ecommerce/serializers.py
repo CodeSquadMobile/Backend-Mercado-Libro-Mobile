@@ -13,25 +13,19 @@ from .models import (
     Contacto
 )
 
-def validate_password(self, value):
-    return make_password
-
 class UserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(required=True)
     username = serializers.CharField(required=True)
-    password = serializers.CharField(min_length=8)
+    password = serializers.CharField(write_only=True, min_length=8)
 
     def create(self, validated_data):
-        user = get_user_model().objects.create(
-            email=validated_data['email'],
-            username=validated_data['username'],
-            password=make_password(validated_data['password'])
-        )
-        return user
+        validated_data['password'] = make_password(validated_data['password'])
+        return get_user_model().objects.create(**validated_data)
 
     class Meta:
         model = get_user_model()
         fields = ('email', 'username', 'password')
+
 
 class CategoriaSerializer(serializers.ModelSerializer):
     class Meta:

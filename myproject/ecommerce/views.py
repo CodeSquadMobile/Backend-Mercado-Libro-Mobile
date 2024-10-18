@@ -1,5 +1,6 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
+from rest_framework.exceptions import NotAuthenticated
 from django.contrib.auth import authenticate, login, logout
 from rest_framework import status, generics
 from rest_framework.response import Response 
@@ -28,6 +29,7 @@ from .serializers import (
     ReseñaSerializer,
     ContactoSerializer
 )
+from myproject.ecommerce import serializers
 
 
 class SignupView(generics.CreateAPIView):
@@ -86,7 +88,12 @@ class DireccionViewSet(viewsets.ModelViewSet):
     serializer_class = DireccionSerializer
 
     def get_queryset(self):
-        return Direccion.objects.filter(usuario=self.request.user)  
+        if self.request.user.is_anonymous:
+            # Si el usuario no está autenticado, lanzamos la excepción
+            raise NotAuthenticated("Usuario no autenticado. Debes iniciar sesión para acceder a esta información.")
+        
+        # Si el usuario está autenticado, devolvemos las direcciones relacionadas a ese usuario
+        return Direccion.objects.filter(usuario=self.request.user)   
 
 class MetodoPagoViewSet(viewsets.ModelViewSet):
     queryset = MetodoPago.objects.all()

@@ -1,9 +1,9 @@
 from pathlib import Path
-import os
-from datetime import timedelta  
+import os 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -14,7 +14,8 @@ SECRET_KEY = 'django-insecure-u2cy_*yur-^)a-069jr*k^ap0lz!07%iqlm_sc*+3mcwf8-)iw
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.100.26', 'localhost', '127.0.0.1', '192.168.0.244']
+ALLOWED_HOSTS = ['192.168.0.244', 'localhost', '127.0.0.1']
+
 
 # Application definition
 
@@ -29,10 +30,10 @@ INSTALLED_APPS = [
     'ecommerce',
     'corsheaders',
     'rest_framework',
-    'rest_framework_simplejwt.token_blacklist',  # Añadir para soporte de blacklist de JWT
 ]
 
 AUTH_USER_MODEL = 'ecommerce.CustomUser'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -46,6 +47,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
+
 
 ROOT_URLCONF = 'myproject.urls'
 
@@ -70,34 +72,34 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'myproject.wsgi.application'
 
+
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+
+    # DATABASES = {
+
+    # 'default': {
+    # 'ENGINE': 'django.db.backends.mysql',
+    # 'NAME': 'mercadolibro',
+    # 'USER': 'root',
+    # 'PASSWORD': '',
+    # 'HOST': 'localhost',
+    # 'PORT': '3306',
+    # 'OPTIONS': {
+    # 'sql_mode': 'traditional',
+    # }
+    # }
+    # }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'mercadolibro',
-        'USER': 'root',
-        'PASSWORD': 'Ismael07',
-        'HOST': 'localhost',
-        'PORT': '3306',
-        'OPTIONS': {
-            'sql_mode': 'traditional',
-        }
+        'NAME': 'bvtg6iunh4mr860neeyz', 
+        'USER': 'uvo9ixg777tut6cu',       
+        'PASSWORD': '6EdVRlTKW8Dzi8QvpeAs',
+        'HOST': 'bvtg6iunh4mr860neeyz-mysql.services.clever-cloud.com', 
+        'PORT': '3306',                     
     }
-}
-
-# JWT Configuration
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ],
-}
-
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),  # Duración del token
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    'ROTATE_REFRESH_TOKENS': True,  
-    'BLACKLIST_AFTER_ROTATION': True, 
 }
 
 # Password validation
@@ -118,6 +120,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -129,6 +132,7 @@ USE_I18N = True
 
 USE_TZ = True
 
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
@@ -138,6 +142,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+DEBUG = True
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

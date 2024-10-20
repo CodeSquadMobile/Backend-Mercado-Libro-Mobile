@@ -46,10 +46,14 @@ class LibroSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_autor(self, obj):
-        return obj.id_autor.nombre_autor 
+        if obj.id_autor:
+            return obj.id_autor.nombre_autor
+        return None
 
     def get_categoria(self, obj):
-        return obj.id_categoria.nombre_categoria
+        if obj.id_categoria:
+            return obj.id_categoria.nombre_categoria
+        return None
 
 class DireccionSerializer(serializers.ModelSerializer):
     class Meta:

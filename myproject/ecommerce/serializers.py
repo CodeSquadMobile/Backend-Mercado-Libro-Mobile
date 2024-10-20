@@ -51,7 +51,7 @@ class LibroSerializer(serializers.ModelSerializer):
         return None
 
     def get_categoria(self, obj):
-         if obj.id_categoria:
+        if obj.id_categoria:
             return obj.id_categoria.nombre_categoria
         return None
 

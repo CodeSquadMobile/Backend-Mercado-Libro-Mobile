@@ -5,6 +5,7 @@ from rest_framework import status, generics
 from rest_framework.response import Response 
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.permissions import IsAuthenticated
 from .models import (
     CustomUser,
     Categoria,
@@ -98,6 +99,7 @@ class LibroViewSet(viewsets.ModelViewSet):
 class DireccionViewSet(viewsets.ModelViewSet):
     queryset = Direccion.objects.all()
     serializer_class = DireccionSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return Direccion.objects.filter(usuario=self.request.user)  
@@ -105,12 +107,14 @@ class DireccionViewSet(viewsets.ModelViewSet):
 class MetodoPagoViewSet(viewsets.ModelViewSet):
     queryset = MetodoPago.objects.all()
     serializer_class = MetodoPagoSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return MetodoPago.objects.filter(usuario=self.request.user) 
 
 class ItemCarritoViewSet(viewsets.ModelViewSet):
     queryset = ItemCarrito.objects.all()
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return ItemCarrito.objects.filter(usuario=self.request.user)
@@ -121,6 +125,7 @@ class ItemCarritoViewSet(viewsets.ModelViewSet):
 class PedidoViewSet(viewsets.ModelViewSet):
     serializer_class = PedidoSerializer
     queryset = Pedido.objects.all()
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return Pedido.objects.filter(usuario=self.request.user)  

@@ -38,22 +38,12 @@ class AutorSerializer(serializers.ModelSerializer):
         fields = ('nombre_autor',)
 
 class LibroSerializer(serializers.ModelSerializer):
-    autor = serializers.SerializerMethodField()
-    categoria = serializers.SerializerMethodField()
+    autor = AutorSerializer(read_only=True, source='id_autor')
+    categoria = CategoriaSerializer(read_only=True, source='id_categoria')
 
     class Meta:
         model = Libro
         fields = '__all__'
-
-    def get_autor(self, obj):
-        if obj.id_autor:
-            return obj.id_autor.nombre_autor
-        return None
-
-    def get_categoria(self, obj):
-        if obj.id_categoria:
-            return obj.id_categoria.nombre_categoria
-        return None
 
 class DireccionSerializer(serializers.ModelSerializer):
     class Meta:

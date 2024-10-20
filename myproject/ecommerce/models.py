@@ -40,13 +40,15 @@ class Autor(models.Model):
 def get_upload_path(instance, filename):
     return f'libros/{instance.titulo}/{filename}'
 
+from cloudinary.models import CloudinaryField
+
 class Libro(models.Model):
     id_libro = models.AutoField(primary_key=True)
-    titulo = models.CharField(blank= False, max_length=255)
-    precio = models.DecimalField(blank= False, max_digits=10, decimal_places=2)
-    stock = models.IntegerField(blank= False)
+    titulo = models.CharField(blank=False, max_length=255)
+    precio = models.DecimalField(blank=False, max_digits=10, decimal_places=2)
+    stock = models.IntegerField(blank=False)
     id_categoria = models.ForeignKey(Categoria, to_field='id_categoria', on_delete=models.CASCADE)
-    descripcion = models.TextField(blank= False)
+    descripcion = models.TextField(blank=False)
     portada = models.ImageField(upload_to=get_upload_path, null=True, blank=True)
     id_autor = models.ForeignKey(Autor, to_field='id_autor', on_delete=models.CASCADE)
 
@@ -58,6 +60,7 @@ class Libro(models.Model):
 
     def __str__(self):
         return self.titulo
+
 
 class Direccion(models.Model):
     usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -80,7 +83,7 @@ class ItemCarrito(models.Model):
 
     class Meta:
         db_table = 'item_carrito'
-        unique_together = ('usuario', 'libro')  # Asegura que un usuario no tenga duplicados del mismo libro en el carrito
+        unique_together = ('usuario', 'libro') 
 
     def __str__(self):
         return f'{self.cantidad} de {self.libro.titulo}'

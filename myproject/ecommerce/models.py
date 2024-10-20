@@ -47,10 +47,10 @@ class Libro(models.Model):
     titulo = models.CharField(blank=False, max_length=255)
     precio = models.DecimalField(blank=False, max_digits=10, decimal_places=2)
     stock = models.IntegerField(blank=False)
-    id_categoria = models.ForeignKey(Categoria, to_field='id_categoria', on_delete=models.CASCADE)
+    categoria = models.ForeignKey(Categoria, to_field='id_categoria', on_delete=models.CASCADE)
     descripcion = models.TextField(blank=False)
     portada = models.ImageField(upload_to=get_upload_path, null=True, blank=True)
-    id_autor = models.ForeignKey(Autor, to_field='id_autor', on_delete=models.CASCADE)
+    autor = models.ForeignKey(Autor, to_field='id_autor', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'libro'

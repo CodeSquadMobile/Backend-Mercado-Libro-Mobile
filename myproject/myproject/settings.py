@@ -1,5 +1,8 @@
 from pathlib import Path
 import os 
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -30,6 +33,8 @@ INSTALLED_APPS = [
     'ecommerce',
     'corsheaders',
     'rest_framework',
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 AUTH_USER_MODEL = 'ecommerce.CustomUser'
@@ -74,20 +79,20 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-    # DATABASES = {
+#DATABASES = {
 
-    # 'default': {
-    # 'ENGINE': 'django.db.backends.mysql',
-    # 'NAME': 'mercadolibro',
-    # 'USER': 'root',
-    # 'PASSWORD': '',
-    # 'HOST': 'localhost',
-    # 'PORT': '3306',
-    # 'OPTIONS': {
-    # 'sql_mode': 'traditional',
-    # }
-    # }
-    # }
+#        'default': {
+#        'ENGINE': 'django.db.backends.mysql',
+#        'NAME': 'mercadolibro',
+#        'USER': 'root',
+#        'PASSWORD': '',
+#        'HOST': 'localhost',
+#        'PORT': '3306',
+#        'OPTIONS': {
+#            'sql_mode': 'traditional',
+#        }
+#    }
+#}
 
 DATABASES = {
     'default': {
@@ -99,6 +104,15 @@ DATABASES = {
         'PORT': '3306',                     
     }
 }
+CLOUDINARY_URL = "cloudinary://131957877534325:dzjK2jRBeSh6dR2k_jGvVLkzN5U@dags2c12e"
+
+CLOUDINARY_STORAGE  = {
+    'cloud_name': 'dags2c12e',
+    'api_key': '131957877534325',
+    'api_secret': 'dzjK2jRBeSh6dR2k_jGvVLkzN5U',
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -140,8 +154,3 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-DEBUG = True
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

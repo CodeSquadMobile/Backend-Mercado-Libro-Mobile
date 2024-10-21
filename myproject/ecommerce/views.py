@@ -115,6 +115,7 @@ class MetodoPagoViewSet(viewsets.ModelViewSet):
 
 class ItemCarritoViewSet(viewsets.ModelViewSet):
     queryset = ItemCarrito.objects.all()
+    serializer_class = ItemCarritoSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):

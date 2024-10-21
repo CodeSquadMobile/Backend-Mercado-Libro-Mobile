@@ -88,7 +88,7 @@ class MetodoPago(models.Model):
     numero_tarjeta = models.CharField(max_length=16)  
     cvv = models.CharField(max_length=3)  
     vencimiento = models.CharField(max_length=7)
-    ipo_tarjeta = models.CharField(max_length=7, choices=TARJETA_OPCIONES)
+    tipo_tarjeta = models.CharField(max_length=7, choices=TARJETA_OPCIONES)
 
     class Meta:
         db_table = 'metodo_pago'

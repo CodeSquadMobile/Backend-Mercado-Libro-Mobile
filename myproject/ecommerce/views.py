@@ -91,10 +91,11 @@ class LibroViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = {
         'titulo': ['icontains'],
-        'id_categoria__nombre_categoria': ['exact'],
+        'categoria__nombre_categoria': ['exact'],
         'precio': ['lte', 'gte'],
         'stock': ['lte', 'gte'],
     }
+
     
 class DireccionViewSet(viewsets.ModelViewSet):
     queryset = Direccion.objects.all()

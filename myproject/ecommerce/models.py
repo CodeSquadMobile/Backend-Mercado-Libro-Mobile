@@ -18,9 +18,6 @@ class Categoria(models.Model):
     class Meta:
         db_table = 'categoria'
 
-    def __unicode__(self):
-        return self.nombre_categoria
-
     def __str__(self):
         return self.nombre_categoria
 
@@ -30,9 +27,6 @@ class Autor(models.Model):
 
     class Meta:
         db_table = 'autor'
-
-    def __unicode__(self):
-        return self.nombre_autor
 
     def __str__(self):
         return self.nombre_autor
@@ -54,9 +48,6 @@ class Libro(models.Model):
 
     class Meta:
         db_table = 'libro'
-
-    def __unicode__(self):
-        return self.titulo
 
     def __str__(self):
         return self.titulo

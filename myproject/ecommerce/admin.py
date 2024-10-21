@@ -31,12 +31,12 @@ class DireccionAdmin(admin.ModelAdmin):
     search_fields = ('usuario__email', 'calle', 'numero', 'ciudad', 'provincia')
 
 class MetodoPagoAdmin(admin.ModelAdmin):
-    list_display = ('usuario', 'numero_tarjeta', 'vencimiento')
+    list_display = ('usuario', 'numero_tarjeta', 'vencimiento', 'tipo_tarjeta') 
     search_fields = ('usuario__email', 'numero_tarjeta')
 
 class ReseñaAdmin(admin.ModelAdmin):
     list_display = ('libro', 'usuario', 'comentario', 'fecha_creacion')
-    search_fields = ('usuario__email', 'libro__titulo')  # Permite buscar reseñas por usuario o título del libro
+    search_fields = ('usuario__email', 'libro__titulo')  
     list_filter = ('libro', 'usuario')
 
 admin.site.register(Categoria)

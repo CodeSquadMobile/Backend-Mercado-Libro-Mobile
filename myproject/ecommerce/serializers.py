@@ -38,12 +38,13 @@ class AutorSerializer(serializers.ModelSerializer):
         fields = ('nombre_autor',)
 
 class LibroSerializer(serializers.ModelSerializer):
-    autor = AutorSerializer(read_only=True)
-    categoria = CategoriaSerializer(read_only=True)
+    id_autor = AutorSerializer(read_only=True)  
+    id_categoria = CategoriaSerializer(read_only=True)
 
     class Meta:
         model = Libro
-        fields = ('id_libro', 'titulo', 'precio', 'stock', 'descripcion', 'portada', 'autor', 'categoria')
+        fields = ('id_libro', 'titulo', 'precio', 'stock', 'descripcion', 'portada', 'id_autor', 'id_categoria')
+
 
 
 class DireccionSerializer(serializers.ModelSerializer):

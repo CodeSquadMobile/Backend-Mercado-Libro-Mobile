@@ -55,10 +55,17 @@ class DireccionSerializer(serializers.ModelSerializer):
         return Direccion.objects.create(usuario=self.context['request'].user, **validated_data)
 
 class MetodoPagoSerializer(serializers.ModelSerializer):
+    TARJETA_OPCIONES = [
+        ('debito', 'Tarjeta Débito'),
+        ('credito', 'Tarjeta Crédito'),
+    ]
+
+    tipo_tarjeta = serializers.ChoiceField(choices=TARJETA_OPCIONES)  
+
     class Meta:
         model = MetodoPago
-        fields = ['id', 'usuario', 'numero_tarjeta', 'cvv', 'vencimiento']
-
+        fields = ['id', 'usuario', 'numero_tarjeta', 'cvv', 'vencimiento', 'tipo_tarjeta']  
+        
     def validate_numero_tarjeta(self, value):
         if len(value) != 16 or not value.isdigit():
             raise serializers.ValidationError("El número de tarjeta debe tener 16 dígitos.")
@@ -76,7 +83,6 @@ class MetodoPagoSerializer(serializers.ModelSerializer):
         mes = value[:2]
         if not (1 <= int(mes) <= 12):
             raise serializers.ValidationError("El mes debe estar entre 01 y 12.")
-
         return value
 
     def create(self, validated_data):
@@ -86,6 +92,7 @@ class MetodoPagoSerializer(serializers.ModelSerializer):
         instance.numero_tarjeta = validated_data.get('numero_tarjeta', instance.numero_tarjeta)
         instance.cvv = validated_data.get('cvv', instance.cvv)
         instance.vencimiento = validated_data.get('vencimiento', instance.vencimiento)
+        instance.tipo_tarjeta = validated_data.get('tipo_tarjeta', instance.tipo_tarjeta)
         instance.save()
         return instance
 
@@ -110,7 +117,7 @@ class ItemCarritoSerializer(serializers.ModelSerializer):
 
 class PedidoSerializer(serializers.ModelSerializer):
     direccion = DireccionSerializer()
-    
+
     class Meta:
         model = Pedido
         fields = ['id_pedido', 'usuario', 'direccion', 'metodo_pago', 'estado', 'fecha_pedido', 'total']

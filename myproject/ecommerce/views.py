@@ -144,6 +144,7 @@ class PedidoViewSet(viewsets.ModelViewSet):
 class ReseñaViewSet(viewsets.ModelViewSet):
     queryset = Reseña.objects.all()
     serializer_class = ReseñaSerializer
+    permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
         serializer.save(usuario=self.request.user)

@@ -105,16 +105,22 @@ class ItemCarritoSerializer(serializers.ModelSerializer):
         model = ItemCarrito
         fields = ['id_libro', 'libro', 'cantidad']
 
+    def validate_cantidad(self, value):
+        if value <= 0:
+            raise serializers.ValidationError("La cantidad debe ser un valor positivo.")
+        return value
+
     def create(self, validated_data):
         item, created = ItemCarrito.objects.get_or_create(
-            usuario=validated_data['usuario'],
+            usuario=validated_data['usuario'],  # Asumimos que el usuario ya fue asignado en `perform_create`
             libro=validated_data['libro'],
             defaults={'cantidad': validated_data['cantidad']}
         )
         if not created:
-            item.cantidad += validated_data['cantidad'] 
+            item.cantidad += validated_data['cantidad']
             item.save()
         return item
+
 
 class PedidoSerializer(serializers.ModelSerializer):
     direccion = DireccionSerializer()

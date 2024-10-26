@@ -124,6 +124,9 @@ class ItemCarritoViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(usuario=self.request.user)
 
+    def perform_update(self, serializer):
+        serializer.save(usuario=self.request.user)
+
 class PedidoViewSet(viewsets.ModelViewSet):
     serializer_class = PedidoSerializer
     queryset = Pedido.objects.all()

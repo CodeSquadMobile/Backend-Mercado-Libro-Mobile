@@ -79,6 +79,10 @@ class ItemCarrito(models.Model):
     def __str__(self):
         return f'{self.cantidad} de {self.libro.titulo}'
 
+    @property
+    def total(self):
+        return self.cantidad * self.libro.precio
+
 class MetodoPago(models.Model):
     TARJETA_OPCIONES = [
         ('debito', 'Tarjeta Débito'),

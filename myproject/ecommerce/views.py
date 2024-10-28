@@ -119,6 +119,7 @@ class MetodoPagoViewSet(viewsets.ModelViewSet):
         return MetodoPago.objects.filter(usuario=self.request.user) 
 
 class ItemCarritoViewSet(viewsets.ModelViewSet):
+    queryset = ItemCarrito.objects.all()
     serializer_class = ItemCarritoSerializer
     permission_classes = [IsAuthenticated]
 

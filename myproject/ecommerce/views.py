@@ -119,7 +119,6 @@ class MetodoPagoViewSet(viewsets.ModelViewSet):
         return MetodoPago.objects.filter(usuario=self.request.user) 
 
 class ItemCarritoViewSet(viewsets.ModelViewSet):
-    queryset = ItemCarrito.objects.all()
     serializer_class = ItemCarritoSerializer
     permission_classes = [IsAuthenticated]
 
@@ -127,9 +126,6 @@ class ItemCarritoViewSet(viewsets.ModelViewSet):
         return ItemCarrito.objects.filter(usuario=self.request.user)
 
     def perform_create(self, serializer):
-        serializer.save(usuario=self.request.user)
-
-    def perform_update(self, serializer):
         serializer.save(usuario=self.request.user)
 
 class PedidoViewSet(viewsets.ModelViewSet):

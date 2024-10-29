@@ -144,6 +144,9 @@ class PedidoSerializer(serializers.ModelSerializer):
         return pedido
 
 class ReseñaSerializer(serializers.ModelSerializer):
+    titulo_libro = serializers.CharField(source='libro.titulo', read_only=True)
+    email_usuario = serializers.EmailField(source='usuario.email', read_only=True)
+    
     class Meta:
         model = Reseña
         fields = ['libro', 'usuario', 'comentario', 'fecha_creacion']

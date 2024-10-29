@@ -129,14 +129,14 @@ class ItemCarritoViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         libro = serializer.validated_data['libro']
         cantidad = serializer.validated_data['cantidad']
-        
-        # Verificar stock y actualizar
         if libro.stock < cantidad:
             raise serializers.ValidationError("No hay suficiente stock disponible.")
         
-        # Reducir stock y guardar el ítem en el carrito
+        # Decrementa el stock después de la validación
         libro.stock -= cantidad
         libro.save()
+        
+        # Guarda el nuevo ItemCarrito
         serializer.save(usuario=self.request.user)
 
     @action(detail=False, methods=['post'], url_path='agregar/(?P<libro_id>[^/.]+)')

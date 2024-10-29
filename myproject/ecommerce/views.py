@@ -127,7 +127,44 @@ class ItemCarritoViewSet(viewsets.ModelViewSet):
         return ItemCarrito.objects.filter(usuario=self.request.user)
 
     def perform_create(self, serializer):
+        libro = serializer.validated_data['libro']
+        cantidad = serializer.validated_data['cantidad']
+        
+        # Verificar stock y actualizar
+        if libro.stock < cantidad:
+            raise serializers.ValidationError("No hay suficiente stock disponible.")
+        
+        # Reducir stock y guardar el ítem en el carrito
+        libro.stock -= cantidad
+        libro.save()
         serializer.save(usuario=self.request.user)
+
+    @action(detail=False, methods=['post'], url_path='agregar/(?P<libro_id>[^/.]+)')
+    def agregar_al_carrito(self, request, libro_id=None):
+        cantidad = request.data.get('cantidad', 1)
+        
+        try:
+            libro = Libro.objects.get(id=libro_id)
+        except Libro.DoesNotExist:
+            return Response({"error": "Libro no encontrado."}, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = self.get_serializer(data={
+            'usuario': request.user.id,
+            'libro': libro_id,
+            'cantidad': cantidad
+        })
+        
+        if serializer.is_valid():
+            serializer.save(usuario=request.user, libro=libro, cantidad=cantidad)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=False, methods=['get'])
+    def mis_items(self, request):
+        items = ItemCarrito.objects.filter(usuario=request.user)
+        serializer = self.get_serializer(items, many=True)
+        return Response(serializer.data)
 
 class PedidoViewSet(viewsets.ModelViewSet):
     serializer_class = PedidoSerializer

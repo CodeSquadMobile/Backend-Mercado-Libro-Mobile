@@ -112,7 +112,7 @@ class ItemCarritoSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("La cantidad debe ser al menos 1.")
         return value
 
-def create(self, validated_data):
+    def create(self, validated_data):
     libro = validated_data['libro']
     cantidad_solicitada = validated_data['cantidad']
     

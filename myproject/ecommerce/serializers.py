@@ -98,13 +98,14 @@ class MetodoPagoSerializer(serializers.ModelSerializer):
         return instance
 
 class ItemCarritoSerializer(serializers.ModelSerializer):
-    libro = LibroSerializer(read_only=True)
-    id_libro = serializers.PrimaryKeyRelatedField(queryset=Libro.objects.all(), source='libro', write_only=True)
+    email_usuario = serializers.EmailField(source='usuario.email', read_only=True)
+    titulo_libro = serializers.CharField(source='libro.titulo', read_only=True)
+    precio_unitario = serializers.DecimalField(source='libro.precio', max_digits=10, decimal_places=2, read_only=True)
     total = serializers.SerializerMethodField()
 
     class Meta:
         model = ItemCarrito
-        fields = ['id_libro', 'libro', 'cantidad', 'total']
+        fields = ['email_usuario', 'titulo_libro', 'cantidad', 'precio_unitario', 'total']
 
     def validate_cantidad(self, value):
         if value < 1:
@@ -118,7 +119,7 @@ class ItemCarritoSerializer(serializers.ModelSerializer):
             defaults={'cantidad': validated_data['cantidad']}
         )
         if not created:
-            item.cantidad += validated_data['cantidad'] 
+            item.cantidad += validated_data['cantidad']
             item.save()
         return item
 

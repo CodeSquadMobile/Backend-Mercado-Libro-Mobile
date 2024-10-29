@@ -123,6 +123,9 @@ class Reseña(models.Model):
 
     class Meta:
         db_table = 'reseña'
+    
+    def __str__(self):
+        return f'Reseña de {self.usuario.email} para {self.libro.titulo}'
 
 class Contacto(models.Model):
     nombre = models.CharField(max_length=100)

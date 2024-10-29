@@ -112,20 +112,24 @@ class ItemCarritoSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("La cantidad debe ser al menos 1.")
         return value
 
-    def create(self, validated_data):
-        libro = validated_data['libro']
-        cantidad_solicitada = validated_data['cantidad']
-        if libro.stock < cantidad_solicitada:
+def create(self, validated_data):
+    libro = validated_data['libro']
+    cantidad_solicitada = validated_data['cantidad']
+    
+    if libro.stock < cantidad_solicitada:
         raise serializers.ValidationError("La cantidad solicitada supera el stock disponible.")
-        item, created = ItemCarrito.objects.get_or_create(
-            usuario=validated_data['usuario'],
-            libro=libro,
-            defaults={'cantidad': cantidad_solicitada}
+    
+    item, created = ItemCarrito.objects.get_or_create(
+        usuario=validated_data['usuario'],
+        libro=libro,
+        defaults={'cantidad': cantidad_solicitada}
     )
-        if not created:
-            item.cantidad += cantidad_solicitada
-            item.save()
-        return item
+    
+    if not created:
+        item.cantidad += cantidad_solicitada
+        item.save()
+    
+    return item
 
     def update(self, instance, validated_data):
         instance.cantidad = validated_data.get('cantidad', instance.cantidad)

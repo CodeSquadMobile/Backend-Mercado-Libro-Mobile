@@ -77,7 +77,8 @@ class ItemCarrito(models.Model):
         unique_together = ('usuario', 'libro') 
 
     def __str__(self):
-        return f'{self.cantidad} de {self.libro.titulo}'
+        libro_titulo = self.libro.titulo if self.libro else "Libro no disponible"
+        return f'{self.cantidad} de {libro_titulo}'
 
     @property
     def total(self):

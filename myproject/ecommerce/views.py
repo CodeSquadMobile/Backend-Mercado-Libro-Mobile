@@ -2,7 +2,9 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from django.contrib.auth import authenticate, login, logout
 from rest_framework import status, generics
-from rest_framework.response import Response 
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated

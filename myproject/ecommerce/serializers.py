@@ -14,6 +14,7 @@ from .models import (
 )
 
 class UserSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
     email = serializers.EmailField(required=True)
     username = serializers.CharField(required=True)
     password = serializers.CharField(write_only=True, min_length=8)
@@ -24,7 +25,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ('email', 'username', 'password')
+        fields = ('id', 'email', 'username', 'password')
 
 
 class CategoriaSerializer(serializers.ModelSerializer):
@@ -153,12 +154,13 @@ class PedidoSerializer(serializers.ModelSerializer):
         return pedido
 
 class ReseñaSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
     titulo_libro = serializers.CharField(source='libro.titulo', read_only=True)
     email_usuario = serializers.EmailField(source='usuario.email', read_only=True)
     
     class Meta:
         model = Reseña
-        fields = ['titulo_libro', 'email_usuario', 'comentario', 'fecha_creacion']
+        fields = ['id', 'titulo_libro', 'email_usuario', 'comentario', 'fecha_creacion']
 
 class ContactoSerializer(serializers.ModelSerializer):
     class Meta:

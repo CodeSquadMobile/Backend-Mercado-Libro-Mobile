@@ -156,7 +156,7 @@ class ReseñaSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Reseña
-        fields = ['id', 'titulo_libro', 'email_usuario', 'comentario', 'fecha_creacion']
+        fields = ['id', 'libro','titulo_libro', 'email_usuario', 'comentario', 'fecha_creacion']
 
 class ContactoSerializer(serializers.ModelSerializer):
     class Meta:

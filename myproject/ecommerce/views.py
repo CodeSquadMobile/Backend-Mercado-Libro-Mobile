@@ -43,6 +43,7 @@ class SignupView(generics.CreateAPIView):
         user = CustomUser.objects.get(email=request.data['email'])
         refresh = RefreshToken.for_user(user)
         return Response({
+            'user_id': user.id,  # Agrega el user_id aquí
             'refresh': str(refresh),
             'access': str(refresh.access_token),
             'user': UserSerializer(user).data

@@ -79,7 +79,7 @@ class MetodoPagoSerializer(serializers.ModelSerializer):
         return value
 
     def validate_vencimiento(self, value):
-        if len(value) != 7 or value[2] != '/':
+        if len(value) != 5 or value[2] != '/':
             raise serializers.ValidationError("El formato de vencimiento debe ser MM/AA.")
         
         mes = value[:2]

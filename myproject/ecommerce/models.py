@@ -92,7 +92,7 @@ class MetodoPago(models.Model):
     usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     numero_tarjeta = models.CharField(max_length=16)  
     cvv = models.CharField(max_length=3)  
-    vencimiento = models.CharField(max_length=7)
+    vencimiento = models.CharField(max_length=5)
     tipo_tarjeta = models.CharField(max_length=7, choices=TARJETA_OPCIONES)
 
     class Meta:

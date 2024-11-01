@@ -76,6 +76,7 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated, IsSelfOrAdmin]
 
+    # Método personalizado para eliminar un usuario
     def destroy(self, request, *args, **kwargs):
         user = self.get_object()
         if user == request.user or request.user.is_staff: 
@@ -83,6 +84,12 @@ class UserViewSet(viewsets.ModelViewSet):
             return Response(status=status.HTTP_204_NO_CONTENT)
         else:
             return Response({'error': 'No tienes permiso para eliminar esta cuenta'}, status=status.HTTP_403_FORBIDDEN)
+    
+    # Acción personalizada para obtener el usuario autenticado
+    @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated])
+    def me(self, request):
+        serializer = self.get_serializer(request.user)
+        return Response(serializer.data)
 
 
 class CategoriaViewSet(viewsets.ModelViewSet):

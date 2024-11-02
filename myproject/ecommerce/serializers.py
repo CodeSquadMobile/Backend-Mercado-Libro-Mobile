@@ -106,7 +106,7 @@ class ItemCarritoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ItemCarrito
-        fields = ['libro', 'usuario', 'email_usuario', 'titulo_libro', 'cantidad', 'precio_unitario', 'total']
+        fields = ['id', 'libro', 'usuario', 'email_usuario', 'titulo_libro', 'cantidad', 'precio_unitario', 'total']  # Incluye el campo 'id' aquí
 
     def validate_cantidad(self, value):
         if value < 1:

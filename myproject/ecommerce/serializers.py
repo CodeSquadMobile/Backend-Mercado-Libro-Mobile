@@ -31,22 +31,20 @@ class UserSerializer(serializers.ModelSerializer):
 class CategoriaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Categoria
-        fields = ('nombre_categoria',)
+        fields = ('id_categoria', 'nombre_categoria') 
 
 class AutorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Autor
-        fields = ('nombre_autor',)
+        fields = ('id_autor', 'nombre_autor')  
 
 class LibroSerializer(serializers.ModelSerializer):
-    id_autor = AutorSerializer(read_only=True)  
-    id_categoria = CategoriaSerializer(read_only=True)
+    autor = AutorSerializer(read_only=True)  
+    categoria = CategoriaSerializer(read_only=True)  
 
     class Meta:
         model = Libro
-        fields = ('id_libro', 'titulo', 'precio', 'stock', 'descripcion', 'portada', 'id_autor', 'id_categoria')
-
-
+        fields = ('id_libro', 'titulo', 'precio', 'stock', 'descripcion', 'portada', 'autor', 'categoria')  # Actualiza aquí
 
 class DireccionSerializer(serializers.ModelSerializer):
     class Meta:

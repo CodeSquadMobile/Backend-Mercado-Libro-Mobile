@@ -43,14 +43,11 @@ class Libro(models.Model):
     stock = models.IntegerField(blank=False)
     categoria = models.ForeignKey(Categoria, to_field='id_categoria', on_delete=models.CASCADE)
     descripcion = models.TextField(blank=False)
-    portada = models.ImageField(upload_to=get_upload_path, null=True, blank=True)
+    portada = CloudinaryField('image', null=True, blank=True)
     autor = models.ForeignKey(Autor, to_field='id_autor', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'libro'
-
-    def __str__(self):
-        return self.titulo
 
 
 class Direccion(models.Model):

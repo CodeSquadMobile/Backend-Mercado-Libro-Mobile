@@ -44,7 +44,7 @@ class LibroSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Libro
-        fields = ('id_libro', 'titulo', 'precio', 'stock', 'descripcion', 'portada', 'autor', 'categoria')  # Actualiza aquí
+        fields = ('id_libro', 'titulo', 'precio', 'stock', 'descripcion', 'portada', 'autor', 'categoria') 
 
 class DireccionSerializer(serializers.ModelSerializer):
     class Meta:

@@ -110,7 +110,6 @@ class LibroViewSet(viewsets.ModelViewSet):
         'precio': ['lte', 'gte'],
         'stock': ['lte', 'gte'],
     }
-
     
 class DireccionViewSet(viewsets.ModelViewSet):
     queryset = Direccion.objects.all()

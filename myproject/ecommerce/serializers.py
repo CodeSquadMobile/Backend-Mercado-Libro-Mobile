@@ -86,7 +86,9 @@ class MetodoPagoSerializer(serializers.ModelSerializer):
         return value
 
     def create(self, validated_data):
-        return MetodoPago.objects.create(usuario=self.context['request'].user, **validated_data)
+        usuario = self.context['request'].user 
+        validated_data.pop('usuario', None)
+        return MetodoPago.objects.create(usuario=usuario, **validated_data)
 
     def update(self, instance, validated_data):
         instance.numero_tarjeta = validated_data.get('numero_tarjeta', instance.numero_tarjeta)
